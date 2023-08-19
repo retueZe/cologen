@@ -1,6 +1,5 @@
 import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
-import dts from 'rollup-plugin-dts'
 import * as path from 'node:path'
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 
@@ -50,6 +49,9 @@ function buildPackageJson() {
         },
         './package.json': './package.json'
     }
+    packageJson.bin = {
+        'cologen': './index.js'
+    }
     delete packageJson.scripts
     delete packageJson.devDependencies
 
@@ -88,20 +90,9 @@ const config = [
             typescript(),
             terser({
                 ecma: 2020,
-                module: true,
-                keep_classnames: true,
-                keep_fnames: true
+                module: true
             })
         ]
-    },
-    {
-        output: {
-            dir: 'build',
-            entryFileNames: createEntryFileNames('.d.ts'),
-            chunkFileNames: '.chunks/[name]-[hash].d.ts',
-            format: 'esm'
-        },
-        plugins: [dts()]
     }
 ]
 export default config.map(applyDefaultConfig)

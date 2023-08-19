@@ -1,3 +1,3 @@
 # `cologen`
 
-TODO
+Configurable changelog generator.
